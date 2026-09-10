@@ -1,0 +1,18 @@
+* text=auto
+
+*.cs text
+*.shader text
+*.compute text
+*.json text
+*.xml text
+*.md text
+*.txt text
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.mp3 binary
+*.wav binary
+*.ogg binary
+*.fbx binary
