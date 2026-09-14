@@ -13,14 +13,14 @@ public class Simulation
     // 건물들. 주거지, 상업지, 공장 등
     //public List<Oikodomema> Oikodomemata;
     // 맵 정보
-    // public Map Map;
+    public Map Map { get; private set; }
 
     public Simulation()
     {
         // Todo: 생성자 제대로 만들기. 지금은 임시로 채워만 놓음.
         // List<Soma> Somata = new List<Soma>();
         // List<Oikodomema> Oikodomemata = new List<Oikodomema>();
-        // Map = new Map();
+        Map = new Map();
     }
 
     /// <summary>
