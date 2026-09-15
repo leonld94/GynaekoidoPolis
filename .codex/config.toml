@@ -1,4 +1,4 @@
 
 [mcp_servers.unity]
 command = "C:\\Users\\leonl\\AppData\\Local\\Unity\\bin\\unity.exe"
-args = ["mcp","--project-path","C:\\Users\\leonl\\GynaekoidoPolis"]
+args = ["mcp","--project-path","C:\\Users\\leonl\\UnityProjects\\GynaikoeidoPolis"]

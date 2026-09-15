@@ -4,6 +4,9 @@ using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using UnityEngine.Windows;
 
+/// <summary>
+/// InGameScene에서 카메라를 조작하는 Controller. WASD로 이동, QE로 회전, 마우스 휠로 높이 조절.
+/// </summary>
 public class CameraController : MonoBehaviour
 {
     [Header("Input")]
