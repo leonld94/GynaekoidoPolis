@@ -16,6 +16,30 @@ public class SimulationClock
     public int Day { get; private set; }
     public int Year { get; private set; }
 
+    public SimulationClock()
+    {
+
+    }
+
+    public SimulationClock(SimulationClockData data)
+    {
+        CurrentTick = data.currentTick;
+
+        Hour = (int)(CurrentTick / TicksPerHour % HoursPerDay);
+
+        Day = (int)(CurrentTick / (TicksPerHour * HoursPerDay) % DaysPerYear);
+
+        Year = (int)(CurrentTick / (TicksPerHour * HoursPerDay * DaysPerYear));
+    }
+
+    public SimulationClockData CreateData()
+    {
+        return new SimulationClockData
+        {
+            currentTick = CurrentTick
+        };
+    }
+
     public void Reset()
     {
         CurrentTick = 0;

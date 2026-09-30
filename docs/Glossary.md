@@ -21,9 +21,9 @@
 | --- | --- | --- |
 | `Soma` (`σῶμα`, 복수 `Somata`) | 물리적인 몸을 가지고 맵에 존재하는 개체의 상위 개념 | 결정 |
 | `Oikodomema` (`οἰκοδόμημα`, 복수 `Oikodomemata`) | 주거지, 생산 시설 등 건물 또는 구조물 | 결정 |
-| `Thnetos` (`θνητός`, 복수 `Thnetoi`) | 자연적인 필멸 `Soma` | 검토안 |
-| `Organon` (`ὄργανον`, 복수 `Organa`) | 특정 목적을 수행하도록 만들어진 인공 `Soma` | 검토안 |
-| `Gynaikoeides` (`γυναικοειδής`, 복수 `Gynaikoeideis`) | 필멸 종족을 부양하기 위해 만들어진 `Organon`의 총칭 | 검토안 |
+| `Thnetos` (`θνητός`, 복수 `Thnetoi`) | 자연적인 필멸의 `Soma` | 결정 |
+| `Organon` (`ὄργανον`, 복수 `Organa`) | 특정 목적을 수행하도록 만들어진 인공 `Soma` | 결정 |
+| `Gynaikoeides` (`γυναικοειδής`, 복수 `Gynaikoeideis`) | 필멸 종족 중 하나인 Anthropos가 스스로를 부양하기 위해 만든 `Organon`의 일반적 명칭 | 검토안 |
 
 ### 검토 중인 개념 계층
 

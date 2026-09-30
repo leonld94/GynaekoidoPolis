@@ -1,7 +1,7 @@
 # 시간 시스템
 
 > 상태: 부분 구현  
-> 관련 코드: `SimulationClock.cs`, `SimulationController.cs`, `Simulation.cs`
+> 관련 코드: `SimulationClock.cs`, `SimulationController.cs`, `Simulation.cs`, `SimulationClockData.cs`
 
 ## 목적
 
@@ -66,5 +66,4 @@
 - 긴 프레임 이후 밀린 틱을 모두 처리할지, 프레임당 최대 처리 틱 수를 둘지 결정해야 한다.
 - `Simulation.Tick()` 안에서 건설, 인구, 자원 등 하위 시스템을 실행하는 순서를 정해야 한다.
 - 같은 틱에 발생한 상태 변경을 즉시 반영할지 다음 틱에 반영할지 정해야 한다.
-- 세이브 데이터에 시각을 구성하는 필드를 직접 저장할지 `CurrentTick`만 저장하고 복원할지 정해야 한다.
 

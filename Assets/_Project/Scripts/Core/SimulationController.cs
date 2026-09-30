@@ -16,6 +16,7 @@ public class SimulationController : MonoBehaviour
 
     // 바깥에서 참조하는 Simulation. SimulationController가 Simulation을 가지고 있어야 함.
     public Simulation Simulation { get; private set; }
+    public MapRenderer MapRenderer;
 
     // 틱 실행 연산을 위해 흐른 시간을 계산하는 변수
     private double _timeAccumulator = 0d;
@@ -32,7 +33,14 @@ public class SimulationController : MonoBehaviour
     {
         // Todo: 세이브파일에서 Simulation을 받아오는 로직 구현. 지금은 새로 생성만 함
 
-        SetSimulation(null);
+        Simulation = new Simulation(GameDataTransfer.GetGameData());
+
+    }
+
+    void Start()
+    {
+
+        MapRenderer.RenderMap(Simulation.Map);
     }
 
     private void OnEnable()
@@ -103,24 +111,6 @@ public class SimulationController : MonoBehaviour
     {
         IsPaused = !IsPaused;
     }
-
-    /// <summary>
-    /// Simulation을 초기설정하는 함수. 저장된 Sim이 있으면 정보를 받아오고, 없으면 새로 생성함.
-    /// </summary>
-    /// <param name="simulation"></param>
-    private void SetSimulation(Simulation simulation)
-    {
-        if(simulation == null)
-        {
-            Simulation = new Simulation();
-            Simulation.SetSimulationClock(null);
-        }
-        else
-        {
-            Simulation = simulation;
-        }
-    }
-
 
     private void Update()
     {

@@ -15,38 +15,20 @@ public class Simulation
     // 맵 정보
     public Map Map { get; private set; }
 
-    public Simulation()
+    public Simulation(GameData gameData)
     {
         // Todo: 생성자 제대로 만들기. 지금은 임시로 채워만 놓음.
         // List<Soma> Somata = new List<Soma>();
         // List<Oikodomema> Oikodomemata = new List<Oikodomema>();
-        Map = new Map();
-    }
 
-    /// <summary>
-    /// SimulationClock을 초기설정하는 함수. 저장된 Sim이 있으면 Clock을 받아오고, 없으면 새로 생성함.
-    /// </summary>
-    /// <param name="clock">받아올 clock</param>
-    public void SetSimulationClock(SimulationClock clock)
-    {
-        if(Clock != null)
+        if (gameData == null)
         {
-            Debug.LogError("SimulationClock이 이미 설정되어 있어 덮어 쓸 수 없습니다.");
-            return;
+            throw new System.ArgumentNullException(nameof(gameData));
         }
 
-        //// 가능한 두 가지 경우의 수
-        // 1. 시뮬레이션을 새로 만드는 경우(게임을 새로 파는 경우): SimulationClock을 새로 만듦
-        // 2. 세이브파일을 받아오는 경우(게임을 이어서 하는 경우): SimulationClock을 세이브파일에서 받아옴
-        if (clock == null)
-        {
-            Clock = new SimulationClock();
-            Clock.Reset();
-        }
-        else
-        {
-            Clock = clock;
-        }
+
+        Map = new Map(gameData.mapData);
+        Clock = new SimulationClock(gameData.simulationClockData);
     }
 
     public void Tick()
