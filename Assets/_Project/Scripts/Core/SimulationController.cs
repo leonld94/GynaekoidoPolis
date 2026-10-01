@@ -8,15 +8,20 @@ public class SimulationController : MonoBehaviour
 {
 
     [Header("Input")]
-    [SerializeField] private InputActionReference pauseAction;
-    [SerializeField] private InputActionReference speed1Action;
-    [SerializeField] private InputActionReference speed2Action;
-    [SerializeField] private InputActionReference speed3Action;
-    [SerializeField] private InputActionReference speed6Action;
+    [SerializeField] public InputActionReference pauseAction;
+    [SerializeField] public InputActionReference speed1Action;
+    [SerializeField] public InputActionReference speed2Action;
+    [SerializeField] public InputActionReference speed3Action;
+    [SerializeField] public InputActionReference speed6Action;
 
-    // 바깥에서 참조하는 Simulation. SimulationController가 Simulation을 가지고 있어야 함.
+
+    // 바깥에서 참조할 수 있는 Simulation. SimulationController가 Simulation을 가지고 있어야 함.
     public Simulation Simulation { get; private set; }
+    [Header("Map")]
     public MapRenderer MapRenderer;
+
+    [Header("Time")]
+    public GameObject RightDownUI;
 
     // 틱 실행 연산을 위해 흐른 시간을 계산하는 변수
     private double _timeAccumulator = 0d;
@@ -31,7 +36,6 @@ public class SimulationController : MonoBehaviour
 
     private void Awake()
     {
-        // Todo: 세이브파일에서 Simulation을 받아오는 로직 구현. 지금은 새로 생성만 함
 
         Simulation = new Simulation(GameDataTransfer.GetGameData());
 
@@ -39,8 +43,17 @@ public class SimulationController : MonoBehaviour
 
     void Start()
     {
+        // UI Event 구독시키기
+        //pauseAction.action.performed += 
 
-        MapRenderer.RenderMap(Simulation.Map);
+        if (MapRenderer == null)
+        {
+            Debug.Log("Prototype 감지 from SimulationController.Start()");
+        }
+        else
+        {
+            MapRenderer.RenderMap(Simulation.Map);
+        }
     }
 
     private void OnEnable()
@@ -77,7 +90,7 @@ public class SimulationController : MonoBehaviour
     {
         SwitchPause();
         Debug.Log(IsPaused
-            ? "Game Paused"
+            ? $"Game Paused in {Simulation.Clock.ToString()} Tick"
             : $"Game Resumed at {(int)GameSpeed}x");
     }
 
@@ -109,6 +122,14 @@ public class SimulationController : MonoBehaviour
     // 게임 진행할지 말지 바꾸는 스위치. 스페이스바 누를 때마다 바뀜.
     public void SwitchPause()
     {
+        if (IsPaused)
+        {
+            RightDownUI.GetComponent<RightDownUIPanelScript>().PausedDisable(GameSpeed);
+        }
+        else
+        {
+            RightDownUI.GetComponent<RightDownUIPanelScript>().PausedEnable();
+        }
         IsPaused = !IsPaused;
     }
 

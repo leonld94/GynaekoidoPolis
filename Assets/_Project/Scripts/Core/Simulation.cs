@@ -5,6 +5,33 @@ using UnityEngine;
 /// </summary>
 public class Simulation
 {
+    public int FoodStorageCapacity = 1000;                    // 창고 하나 지을 때마다 1000씩 증가
+    public int MaterialsStorageCapacity = 2000;               // 창고 하나 지을 때마다 1000씩 증가
+    public int InactiveGynaikoeideisStorageCapacity = 0;      // 창고 하나 지을 때마다 10씩 증가
+
+    // 초기 저장값
+    public int StoredFood = 1000;
+    public int StoredMaterials = 2000;
+    public int LivingAnthropoiCount = 20;
+    public int WorkingAnthropoiCount = 0;
+    public int ActiveGynaikoeideisCount = 100;
+    public int WorkingGynaikoeideisCount = 0;
+    public int InactiveGynaikoeideisCount = 0;
+
+    // 위기값. 해당 값만큼 Food와 Materials 요구량이 배가 됨.
+    public int ConsumeMultiplier = 1;
+
+    // 연산용 값. 유지비
+
+    public const int FoodConsumedPerAnthroposPerHour = 10;
+    public const int MaterialsConsumedPerAnthroposPerHour = 1;
+    public const int MaterialsConsumedPerGynaikoeidesPerHour = 10;
+
+    // 승리 조건
+    public const int RescueArrivalDay = 30;
+
+    // 패배 조건
+    public const int AnthropoiDeathLimit = 10;
 
     public SimulationClock Clock { get; private set; }
 
@@ -23,22 +50,31 @@ public class Simulation
 
         if (gameData == null)
         {
-            throw new System.ArgumentNullException(nameof(gameData));
+            Debug.Log("Prototype 감지 from Simulation Constructor");
+            Clock = new SimulationClock();
+            Clock.Reset();
         }
-
-
-        Map = new Map(gameData.mapData);
-        Clock = new SimulationClock(gameData.simulationClockData);
+        else
+        {
+            Map = new Map(gameData.mapData);
+            Clock = new SimulationClock(gameData.simulationClockData);
+        }
     }
 
+    /// <summary>
+    /// 시뮬레이션 틱 진행. Clock은 시간값을 진행시킬 뿐이고 실제론 뭐든 여기서 연산.
+    /// </summary>
     public void Tick()
     {
-        // Todo:
-        Clock.AdvanceTick();
+        // Todo: 시뮬레이션 연산 구현
+        TimeChange timeChange = Clock.AdvanceTick();
 
         // 내부에서 하는 활동들:
-        // 1. Obeject들의 상태를 업데이트 등
-
-
+        // 1. 승리 계산
+        // 2. 자원 계산(생산 => 소비 계산)
+        // 3. 사망 계산
+        // 4. 건설 계산
+        // 5. UI 갱신
+            // 가능하다면 날짜 변경할 때 D-Day Text 색깔도 변경. 눈에 잘띄도록.
     }
 }

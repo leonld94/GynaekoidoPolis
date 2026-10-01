@@ -48,30 +48,38 @@ public class SimulationClock
         Year = 0;
     }
 
-    public void AdvanceTick()
+    public TimeChange AdvanceTick()
     {
         CurrentTick++;
 
-        if (CurrentTick % TicksPerHour != 0)
+        bool hourChanged = false;
+        bool dayChanged = false;
+        bool yearChanged = false;
+
+        if (CurrentTick % TicksPerHour == 0)
         {
-            return;
+            hourChanged = true;
+            Hour++;
+
+            if (Hour >= HoursPerDay)
+            {
+                Hour = 0;
+                dayChanged = true;
+                Day++;
+
+                if (Day >= DaysPerYear)
+                {
+                    Day = 0;
+                    yearChanged = true;
+                    Year++;
+                }
+            }
         }
 
-        Hour++;
-        if (Hour < HoursPerDay)
-        {
-            return;
-        }
-
-        Hour = 0;
-        Day++;
-        if (Day < DaysPerYear)
-        {
-            return;
-        }
-
-        Day = 0;
-        Year++;
+        return new TimeChange(
+            hourChanged,
+            dayChanged,
+            yearChanged);
     }
 
     public override string ToString()
@@ -81,4 +89,22 @@ public class SimulationClock
 
     // Todo: 세이브파일에 시간 저장하기.
     // 파일을 뭐로 저장을 하지? Json으로 하나? 그럼 이 데이터들을 Json으로 파싱시키는걸로 하고 아님 string으로 저장하게 하든 뭐 나중가서 저장 구현할 때 생각해보지.
+}
+
+
+public readonly struct TimeChange
+{
+    public bool HourChanged { get; }
+    public bool DayChanged { get; }
+    public bool YearChanged { get; }
+
+    public TimeChange(
+        bool hourChanged,
+        bool dayChanged,
+        bool yearChanged)
+    {
+        HourChanged = hourChanged;
+        DayChanged = dayChanged;
+        YearChanged = yearChanged;
+    }
 }
