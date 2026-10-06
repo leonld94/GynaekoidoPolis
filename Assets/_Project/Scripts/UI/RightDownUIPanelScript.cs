@@ -1,76 +1,104 @@
 using UnityEngine;
 using static SimulationController;
+using TMPro;
 
 public class RightDownUIPanelScript : MonoBehaviour
 {
-    [Header("UI Elements")]
+    [Header("Button Elements")]
     public GameObject EnabledPauseButton;
     public GameObject DisabledPauseButton;
     public GameObject EnabledSpeed1Button;
     public GameObject DisabledSpeed1Button;
+    public GameObject Speed1ButtonHighlight;
     public GameObject EnabledSpeed2Button;
     public GameObject DisabledSpeed2Button;
+    public GameObject Speed2ButtonHighlight;
     public GameObject EnabledSpeed3Button;
     public GameObject DisabledSpeed3Button;
+    public GameObject Speed3ButtonHighlight;
     public GameObject EnabledSpeed6Button;
     public GameObject DisabledSpeed6Button;
+    public GameObject Speed6ButtonHighlight;
 
-    public void PausedEnable()
+    [Header("Text Elements")]
+    public TextMeshProUGUI TimeText;
+    public TextMeshProUGUI RescueDayText;
+
+    public void TimeSwitchChanged(bool isPaused, TimeSpeed gameSpeed)
     {
-        EnabledPauseButton.gameObject.SetActive(true);
-        DisabledPauseButton.gameObject.SetActive(false);
+        //Debug.Log("RightDownUIPanelScript.TimeSwitchCahged() Called");
 
-        EnabledSpeed1Button.gameObject.SetActive(false);
-        EnabledSpeed2Button.gameObject.SetActive(false);
-        //EnabledSpeed3Button.gameObject.SetActive(false);
-        //EnabledSpeed6Button.gameObject.SetActive(false);
+        EnabledPauseButton.SetActive(false);
+        EnabledSpeed1Button.SetActive(false);
+        EnabledSpeed2Button.SetActive(false);
+        EnabledSpeed3Button.SetActive(false);
+        EnabledSpeed6Button.SetActive(false);
 
-        DisabledSpeed1Button.gameObject.SetActive(true);
-        DisabledSpeed2Button.gameObject.SetActive(true);
-        //DisabledSpeed3Button.gameObject.SetActive(true);
-        //DisabledSpeed6Button.gameObject.SetActive(true);
-    }
-
-    public void PausedDisable(TimeSpeed gameSpeed)
-    {
-        EnabledPauseButton.gameObject.SetActive(false);
-        DisabledPauseButton.gameObject.SetActive(true);
+        DisabledPauseButton.SetActive(true);
+        DisabledSpeed1Button.SetActive(true);
+        DisabledSpeed2Button.SetActive(true);
+        DisabledSpeed3Button.SetActive(true);
+        DisabledSpeed6Button.SetActive(true);
+        
+        Speed1ButtonHighlight.SetActive(false);
+        Speed2ButtonHighlight.SetActive(false);
+        Speed3ButtonHighlight.SetActive(false);
+        Speed6ButtonHighlight.SetActive(false);
 
         switch (gameSpeed)
         {
             case TimeSpeed.One:
-                SwitchSpeed1();
+                Speed1ButtonHighlight.SetActive(true);
                 break;
             case TimeSpeed.Two:
-                SwitchSpeed2();
+                Speed2ButtonHighlight.SetActive(true);
                 break;
             case TimeSpeed.Three:
-                SwitchSpeed3();
+                Speed3ButtonHighlight.SetActive(true);
                 break;
             case TimeSpeed.Six:
-                SwitchSpeed6();
+                Speed6ButtonHighlight.SetActive(true);
                 break;
+        }
+
+        if (isPaused)
+        {
+            EnabledPauseButton.SetActive(true);
+            DisabledPauseButton.SetActive(false);
+        }
+        else
+        {
+            switch (gameSpeed)
+            {
+                case TimeSpeed.One:
+                    EnabledSpeed1Button.SetActive(true);
+                    DisabledSpeed1Button.SetActive(false);
+                    break;
+                case TimeSpeed.Two:
+                    EnabledSpeed2Button.SetActive(true);
+                    DisabledSpeed2Button.SetActive(false);
+                    break;
+                case TimeSpeed.Three:
+                    EnabledSpeed3Button.SetActive(true);
+                    DisabledSpeed3Button.SetActive(false);
+                    break;
+                case TimeSpeed.Six:
+                    EnabledSpeed6Button.SetActive(true);
+                    DisabledSpeed6Button.SetActive(false);
+                    break;
+            }
         }
     }
 
-    public void SwitchSpeed1()
+    public void TimeUIRefresh(int day, int hour)
     {
-        EnabledSpeed1Button.gameObject.SetActive(!EnabledSpeed1Button.activeSelf);
-        DisabledSpeed1Button.gameObject.SetActive(!DisabledSpeed1Button.activeSelf);
+        //Debug.Log("RightDownUIPanelScript.TimeUIRefresh 호출");
+
+        TimeText.text = $"{day}일 {hour}시";
     }
 
-    public void SwitchSpeed2()
+    public void RescueDayUIRefresh(int rescueDay)
     {
-        EnabledSpeed2Button.gameObject.SetActive(!EnabledSpeed2Button.activeSelf);
-        DisabledSpeed2Button.gameObject.SetActive(!DisabledSpeed2Button.activeSelf);
-    }
-    public void SwitchSpeed3()
-    {
-
-    }
-
-    public void SwitchSpeed6()
-    {
-
+        RescueDayText.text = $"D-{rescueDay}";
     }
 }

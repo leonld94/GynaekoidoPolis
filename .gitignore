@@ -5,6 +5,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+/.unity-cli/
 
 # Visual Studio / IDE generated files
 .vs/

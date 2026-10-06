@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 /// <summary>
 /// 시뮬레이션에서 흐르는 시간만을 표현하는 Class.
 /// </summary>
@@ -50,6 +52,7 @@ public class SimulationClock
 
     public TimeChange AdvanceTick()
     {
+
         CurrentTick++;
 
         bool hourChanged = false;
