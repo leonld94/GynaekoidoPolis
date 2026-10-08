@@ -4,10 +4,8 @@ using System.Linq;
 public class ResourceSystem
 {
     public GameState GameState { get; private set; }
-
     public List<BuildingState> ActiveBuildings { get; private set; }
-
-
+    
     public ResourceSystem(GameState gameState, List<BuildingState> ActiveB)
     {
         GameState = gameState;
@@ -17,16 +15,36 @@ public class ResourceSystem
 
     public void CalculateResourceProduction()
     {
+        GameState.FoodStorageCapacity = 0;
+        GameState.MaterialsStorageCapacity = 0;
+        GameState.InactiveGynaikoeideisStorageCapacity = 0;
+
         foreach(BuildingState building in ActiveBuildings)
         {
-            if (building is FoodVaultState FoodBuilding)
+            if(building is DepotState DepotBuilding)
             {
-                int production = FoodBuilding.Work() * GameState.FoodProduced;
+                if(DepotBuilding.StoreType == StoreType.Food)
+                {
+                    GameState.FoodStorageCapacity += GameState.FoodStorageGrowth;
+                }
+                else if (DepotBuilding.StoreType == StoreType.Materials)
+                {
+                    GameState.MaterialsStorageCapacity += GameState.MaterialsStorageGrowth;
+                }
+                else if (DepotBuilding.StoreType == StoreType.Gynaikoeideis)
+                {
+                    GameState.InactiveGynaikoeideisStorageCapacity += GameState.InactiveGynaikoeideisStorageGrowth;
+                }
+            }
+
+            else if (building is FoodVaultState FoodBuilding)
+            {
+                int production = FoodBuilding.Work() * FoodVaultState.ResourceProduction;
                 GameState.StoredFood += production;
             }
             else if (building is SupplyMineState MaterialBuilding)
             {
-                int production = MaterialBuilding.Work() * GameState.MaterialsProduced;
+                int production = MaterialBuilding.Work() * SupplyMineState.ResourceProduction;
                 GameState.StoredMaterials += production;
             }
         }
@@ -35,8 +53,8 @@ public class ResourceSystem
     public void CalculateResourceConsumption()
     {
         // 식량 소모 공식: 인간 수 * 시간당 소모량 * 위기값
-        // 자재 소모 공식: (인간 수 * 인간 시간당 소모량 + 인형 수 인형 시간당 소모량)
-                        // * 위기값 + 노동자 수 * 노동 시간당 소모량
+        // 자재 소모 공식: (인간 수 * 인간 시간당 소모량 + 인형 수 * 인형 시간당 소모량) * 위기값
+                        // + 노동자 수 * 노동 시간당 소모량
 
         // 기본적인 소모량
         GameState.FoodConsumedPerHour = 
@@ -63,9 +81,16 @@ public class ResourceSystem
 
     public void CalculateDiesPersons()
     {
-        IEnumerator<BuildingState> enumerator = ActiveBuildings.GetEnumerator();
 
-        bool hasCurrent = enumerator.MoveNext();
+        IEnumerator<BuildingState> enumerator;
+        bool hasCurrent;
+
+        // 0. 건설 노동자부터 전부 빼기
+        // Todo: 아래거 복붙해서 이거 구현
+
+
+        enumerator = ActiveBuildings.GetEnumerator();
+        hasCurrent = enumerator.MoveNext();
 
         // 1. 앞부터 순회하며 인간 노동자 전부 빼기
         // 2. 수가 부족하면 그냥 종료하기
@@ -117,9 +142,15 @@ public class ResourceSystem
 
     public void CalculateDismantle()
     {
-        IEnumerator<BuildingState> enumerator = ActiveBuildings.GetEnumerator();
+        IEnumerator<BuildingState> enumerator;
+        bool hasCurrent;
 
-        bool hasCurrent = enumerator.MoveNext();
+        // 0. 건설 노동자부터 전부 빼기
+        // Todo: 아래거 복붙해서 이거 구현
+
+
+        enumerator = ActiveBuildings.GetEnumerator();
+        hasCurrent = enumerator.MoveNext();
 
         // 1. 앞부터 순회하며 인형 노동자 전부 빼기
         // 2. 수가 부족하면 그냥 종료하기.

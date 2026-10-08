@@ -8,12 +8,15 @@ public class SupplyMineState : BuildingState, IWorkable
     public int AnthroposWorkerCount { get; protected set; }
     public int GynaikoeidesWorkerCount { get; protected set; }
 
+    public const int ResourceProduction = 50;
+
     public SupplyMineState(string siteId, bool isConstructed, 
         GameObject buildingModel, GameObject siteModel) 
         : base(siteId, isConstructed, buildingModel, siteModel)
     {
         AnthroposWorkerCount = 0;
         GynaikoeidesWorkerCount = 0;
+        RequiredMaterials = 600;
     }
 
     public int Work()

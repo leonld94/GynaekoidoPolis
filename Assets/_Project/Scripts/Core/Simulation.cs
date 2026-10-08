@@ -21,6 +21,8 @@ public class Simulation
     public event Action FailureOccurred;
     public event Action VictoryAchieved;
 
+    private BuildingState _buildingIter;
+
     // 몸뚱아리 있는 것들. 필멸자, 불멸자, 가축 등
     //public List<Soma> Somata;
     // 건물들. 주거지, 상업지, 공장 등
@@ -164,7 +166,31 @@ public class Simulation
 
         TimeChange timeChange = Clock.AdvanceTick();
 
-        // 내부에서 하는 활동들:
+        // 0. 건설
+        // 순회
+        for (int i = InactiveBuildings.Count - 1; i >= 0; i--)
+        {
+            _buildingIter = InactiveBuildings[i];
+
+            // 건설값 증가
+            _buildingIter.Construct();
+
+            if (!_buildingIter.isConstructionComplete())
+            {
+                continue;
+            }
+
+            // 완성이 되었다면
+
+            // 건설 노동자 반환
+            GameState.WorkingAnthropoiCount -= _buildingIter.ReturnAnthropoiBuilderNum();
+            GameState.WorkingGynaikoeideisCount -= _buildingIter.ReturnGynaikoeideisBuilderNum();
+
+            // 리스트 옮기기
+            ActiveBuildings.Add(_buildingIter);
+            InactiveBuildings.RemoveAt(i);
+        }
+
         // 1. 승리 계산
         if(timeChange.DayChanged)
         {
@@ -194,22 +220,7 @@ public class Simulation
                 _resourceSystem.CalculateDismantle();
             }
         }
-        // 4. 건설 계산
-        //var completeBuidings = _buildingSystem.CalculateConstructionProgress();
-        //foreach(var building in completeBuidings)
-        //{
-        //    InactiveBuildings.Remove(building);
-        //    ActiveBuildings.Add(building);
-        //}
 
-        // 5. UI 갱신
-        // UIManager.UpdateHourUI();
-        // UIManager.UpdateDayUI();
-            // 가능하다면 날짜 변경할 때 D-Day Text 색깔도 변경. 눈에 잘띄도록.
-
-
-        // BuildingSystem
-        // UIManager
 
         return timeChange;
     }

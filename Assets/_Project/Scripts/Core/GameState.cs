@@ -28,20 +28,23 @@ public class GameState
     }
 
     /// 식량
-    public int FoodStorageCapacity = 1000;                  // 최대 저장량; 창고 하나당 1000
+    public int FoodStorageCapacity = 1000;                     // 최대 저장량
+    public int FoodStorageGrowth = 1000;                    // 창고 하나당 1000
     public int StoredFood = 1000;                           // 저장량
     public int FoodConsumedPerHour = 0;                     // 시간당 소비량
     public int FoodConsumedPerHourWithMultiplier = 0;       // 시간당 소비량(위기값 적용)
 
     // 자재
-    public int MaterialsStorageCapacity = 2000;             // 최대 저장량; 창고 하나당 1000
+    public int MaterialsStorageCapacity = 2000;             // 최대 저장량
+    public int MaterialsStorageGrowth = 1000;               // 창고 하나당 1000
     public int StoredMaterials = 2000;                      // 저장량
     public int MaterialsConsumedPerHour = 0;                // 시간당 소비량
     public int MaterialsConsumedPerHourWithMultiplier = 0;  // 시간당 소비량(위기값 적용)
     public int RequiredWorkingMaterials = 0;
 
     // 인형
-    public int InactiveGynaikoeideisStorageCapacity = 10;    // 최대 비활성 가능 개수; 창고 하나당 10
+    public int InactiveGynaikoeideisStorageCapacity = 10;    // 최대 비활성 가능 개수
+    public int InactiveGynaikoeideisStorageGrowth = 10;     // 창고 하나당 10
     public int InactiveGynaikoeideisCount = 0;              // 비활성화 개수
     public int ActiveGynaikoeideisCount = 100;              // 활성화 개수
 
@@ -49,7 +52,6 @@ public class GameState
 
     // 인간
     public int LivingAnthropoiCount = 20;                   // 생존자 수
-    public int FreeAnthropoiCount = 20;                     // 비노동자 수
     public int WorkingAnthropoiCount = 0;                   // 노동자 수
 
     // 위기값. 해당 값만큼 Food와 Materials 요구량이 배가 됨.
@@ -65,9 +67,6 @@ public class GameState
     public const int FoodThreshold = -100; // 인간이 죽는 식량부족임계값
     public const int MaterialsThreshold = 0; // 인간이 인형을 해체해 땔깜으로 쓰는 임계값
     public const int GynaikoeidesToMaterials = 100; // 해체시 돌려받는 비용
-    // 생산비
-    public const int FoodProduced = 50;
-    public const int MaterialsProduced = 50;
 
     /// <summary>
     /// 식량 부족시 인간을 사망시키는 Method
@@ -84,16 +83,8 @@ public class GameState
             StoredFood -= FoodThreshold;
 
             // 1. 가능하다면 자유노동력 감소
-            if (FreeAnthropoiCount > 0)
-            {
-                FreeAnthropoiCount--;
-            }
             // 2. 안된다면 노동자 감소
             // 이 작업은 다른 class에게 작업 이전: ResourceSystem
-            else
-            {
-                break;
-            }
         }
         return isSomeoneDying;
     }

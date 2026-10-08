@@ -51,8 +51,6 @@ public class SimulationController : MonoBehaviour
 
     void Start()
     {
-        // UI Event 구독시키기
-        //pauseAction.action.performed += 
 
         if (MapRenderer == null)
         {

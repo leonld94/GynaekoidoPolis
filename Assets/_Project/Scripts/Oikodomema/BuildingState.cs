@@ -3,12 +3,17 @@ using UnityEngine;
 
 public class BuildingState
 {
+
+
     public string SiteId { get; }
     public bool IsConstructed { get; protected set; }
-
     public float ConstructionProgress { get; protected set; } // 0.0f ~ 1.0f
-
-    public int BuilderCount { get; set; } // 현재 건설 노동자 수
+    public float ConstructionGrowth { get; protected set; }
+    public int RequiredMaterials { get; protected set; }
+    public int AssignedMaterials { get; protected set; }
+    public int AnthropoiBuilderCount { get; set; } // 현재 건설 노동자 수
+    public int GynaikoeideisBuilderCount { get; set; } // 현재 건설 노동자 수
+    public int BuilderLimit { get; }
 
     private GameObject _buildingModel;
     private GameObject _siteModel;
@@ -19,7 +24,12 @@ public class BuildingState
         SiteId = siteId;
         IsConstructed = isConstructed;
         ConstructionProgress = isConstructed ? 1.0f : 0.0f;
-        BuilderCount = 0;
+        ConstructionGrowth = 1.0f / (10 * 24 * 25);      // 10명이서 하루 일하면 되는 값
+        RequiredMaterials = 0;      // 자식 Class에서 재할당
+        AssignedMaterials = 0;
+        AnthropoiBuilderCount = 0;
+        GynaikoeideisBuilderCount = 0;
+        BuilderLimit = 15;
         _buildingModel = buildingModel;
         _siteModel = siteModel;
 
@@ -38,10 +48,71 @@ public class BuildingState
     /// <summary>
     /// 건설 진행도를 업데이트하는 Method. BuilderCount에 따라 건설 진행도가 증가함.
     /// </summary>
-    /// <param name="constructionProgressPerBuilder">건설자 당 틱에 얼마나 진행되는지</param>
-    public void Construct(float constructionProgressPerBuilder)
+    public void Construct()
     {
-        ConstructionProgress += constructionProgressPerBuilder * BuilderCount;
+        if(AssignedMaterials < RequiredMaterials)
+        {
+            return;
+        }
+        ConstructionProgress += ConstructionGrowth 
+            * (AnthropoiBuilderCount + GynaikoeideisBuilderCount);
+    }
+
+    /// <summary>
+    /// 자재
+    /// </summary>
+    /// <param name="materialsNum">할당 시도한 자재량</param>
+    /// <returns>반환된 자재량</returns>
+    public int AssignMaterials(int materialsNum)
+    {
+        AssignedMaterials += materialsNum;
+        int returnValue = AssignedMaterials - RequiredMaterials;
+        AssignedMaterials -= returnValue;
+        return returnValue;
+    }
+
+    public bool AssignAnthroposBuilder()
+    {
+        if(AnthropoiBuilderCount + GynaikoeideisBuilderCount < BuilderLimit)
+        {
+            AnthropoiBuilderCount++;
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool fireAnthroposBuilder()
+    {
+        if(0 < AnthropoiBuilderCount)
+        {
+            AnthropoiBuilderCount--;
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool AssignGynaikoeidesBuilder()
+    {
+        if (AnthropoiBuilderCount + GynaikoeideisBuilderCount < BuilderLimit)
+        {
+            GynaikoeideisBuilderCount++;
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool fireGynaikoeidesBuilder()
+    {
+        if (0 < GynaikoeideisBuilderCount)
+        {
+            GynaikoeideisBuilderCount--;
+            return true;
+        }
+
+        return false;
     }
 
     public bool isConstructionComplete()
@@ -49,11 +120,24 @@ public class BuildingState
         if(ConstructionProgress >= 1.0f)
         {
             IsConstructed = true;
-            BuilderCount = 0;
             _buildingModel.SetActive(true);
             _siteModel.SetActive(false);
             return true;
         }
         return false;
+    }
+
+    public int ReturnAnthropoiBuilderNum()
+    {
+        int returnValue = AnthropoiBuilderCount;
+        AnthropoiBuilderCount = 0;
+        return returnValue;
+    }
+
+    public int ReturnGynaikoeideisBuilderNum()
+    {
+        int returnValue = GynaikoeideisBuilderCount;
+        GynaikoeideisBuilderCount = 0;
+        return returnValue;
     }
 }
