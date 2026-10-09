@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEditor.Rendering.BuiltIn.ShaderGraph;
 
 /// <summary>
 /// 전체 시뮬레이션 자체를 표상하는 Class. 즉 Simulation 그 자체.
@@ -8,7 +9,6 @@ using System;
 public class Simulation
 {
     private ResourceSystem _resourceSystem;
-
 
     public GameState GameState { get; private set; }
     public SimulationClock Clock { get; private set; }
@@ -20,6 +20,7 @@ public class Simulation
 
     public event Action FailureOccurred;
     public event Action VictoryAchieved;
+    public event Action<BuildingState> BuildingConstructionCompleted;
 
     private BuildingState _buildingIter;
 
@@ -69,7 +70,34 @@ public class Simulation
         ActiveBuildings = BuildingStates.FindAll(building => building.IsConstructed);
         InactiveBuildings = BuildingStates.FindAll(building => !building.IsConstructed);
 
-        _resourceSystem = new ResourceSystem(GameState, ActiveBuildings);
+        _resourceSystem = new ResourceSystem(GameState, ActiveBuildings, InactiveBuildings);
+
+        int foodStgNum = 0;
+        int gnkStgNum = 0;
+        int mtrStgNum = 0;
+
+        foreach(var building in ActiveBuildings)
+        {
+            if(building is DepotState depot)
+            {
+                switch (depot.StoreType)
+                {
+                    case StoreType.Food:
+                        foodStgNum++;
+                        break;
+                    case StoreType.Gynaikoeideis:
+                        gnkStgNum++;
+                        break;
+                    case StoreType.Materials:
+                        mtrStgNum++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        GameState.EditStorageValue(foodStgNum, gnkStgNum, mtrStgNum);
 
         //foreach(BuildingState building in BuildingStates)
         //{
@@ -166,8 +194,8 @@ public class Simulation
 
         TimeChange timeChange = Clock.AdvanceTick();
 
-        // 0. 건설
-        // 순회
+        // 1. 건설
+        // 건물순회
         for (int i = InactiveBuildings.Count - 1; i >= 0; i--)
         {
             _buildingIter = InactiveBuildings[i];
@@ -175,12 +203,15 @@ public class Simulation
             // 건설값 증가
             _buildingIter.Construct();
 
-            if (!_buildingIter.isConstructionComplete())
+            if (!_buildingIter.TryConstructionComplete())
             {
                 continue;
             }
 
             // 완성이 되었다면
+
+            // UI가 켜져있다면 Refresh
+            // 근데 여기서 접근할 수 있는 방도가 없는데.
 
             // 건설 노동자 반환
             GameState.WorkingAnthropoiCount -= _buildingIter.ReturnAnthropoiBuilderNum();
@@ -189,16 +220,25 @@ public class Simulation
             // 리스트 옮기기
             ActiveBuildings.Add(_buildingIter);
             InactiveBuildings.RemoveAt(i);
+
+            BuildingConstructionCompleted?.Invoke(_buildingIter);
+
+
+            // 만약 완성된 건물이 depot라면 미리 값 넣어두기: 이 친구는 기본값이 Food라서 이래도 됨
+            if(_buildingIter is DepotState depot)
+            {
+                GameState.EditStorageValue(1, 0, 0);
+            }
         }
 
-        // 1. 승리 계산
+        // 2 승리 계산
         if(timeChange.DayChanged)
         {
             CheckVictoryCondition();
             CheckHazardLevel();
         }
-        // 2. 자원 계산(생산 => 소비 계산)
-        // 3. 사망/분해 계산
+        // 3. 자원 계산(생산 => 소비 계산)
+        // 4. 사망/분해 계산
         if (timeChange.HourChanged)
         {
             _resourceSystem.CalculateResourceProduction();

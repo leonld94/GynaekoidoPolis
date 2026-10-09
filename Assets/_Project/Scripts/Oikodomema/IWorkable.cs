@@ -14,23 +14,23 @@ internal interface IWorkable
     /// 인간 노동자 추가
     /// </summary>
     /// <returns>성공 여부 출력</returns>
-    public bool AddAnthroposWorker();
+    public bool AssignAnthroposWorker();
 
     /// <summary>
     /// 인간 노동자 감소
     /// </summary>
     /// <returns>성공 여부 출력</returns>
-    public bool SubAnthroposWorker();
+    public bool FireAnthroposWorker();
 
     /// <summary>
     /// 인형 노동자 추가
     /// </summary>
     /// <returns>성공 여부 출력</returns>
-    public bool AddGynaikoeidesWorker();
+    public bool AssignGynaikoeidesWorker();
 
     /// <summary>
     /// 인형 노동자 감소
     /// </summary>
     /// <returns>성공 여부 출력</returns>
-    public bool SubGynaikoeidesWorker();
+    public bool FireGynaikoeidesWorker();
 }

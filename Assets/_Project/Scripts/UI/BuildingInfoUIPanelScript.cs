@@ -1,5 +1,6 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class BuildingInfoUIPanelScript : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class BuildingInfoUIPanelScript : MonoBehaviour
 
     [Header("Under Construction UI")]
     public GameObject UnderConstructionUI;
+
     [Header("BuilderTap")]
     public TextMeshProUGUI AssignedBuilderValueText;
     public TextMeshProUGUI BuilderLimitValueText;
@@ -15,20 +17,23 @@ public class BuildingInfoUIPanelScript : MonoBehaviour
     [Header("GynaikoeideisTap")]
     public TextMeshProUGUI AssignedGynaikoeideisValueText;
     public TextMeshProUGUI BuilderLimitValueText2;
+
     [Header("AnthropoiTap")]
     public TextMeshProUGUI AssignedAnthropoiValueText;
     public TextMeshProUGUI BuilderLimitValueText3;
+
     [Header("MaterialsTap")]
     public TextMeshProUGUI AssignedMaterialsValueText;
     public TextMeshProUGUI RequiredMaterialsValueText;
+
     [Header("ProgressTap")]
     public TextMeshProUGUI ProgressValueText;
-
 
     [Header("CompleteBuilding UI")]
     public GameObject CompleteBuildingUI;
     public GameObject DepotUI;
     public GameObject WorkableUI;
+
     [Header("Depot UI")]
     public GameObject FoodChoicedButton;
     public GameObject FoodSelectButton;
@@ -47,8 +52,11 @@ public class BuildingInfoUIPanelScript : MonoBehaviour
     public TextMeshProUGUI ResourceNameText;
     public TextMeshProUGUI ResourceValueText;
 
-
     private BuildingState _nowBuilding;
+
+    // 임시 사용용 변수: GC 생기지 마라고 깡으로 할당
+    private bool _flag;
+    private int _num;
 
     public bool ShowUIPanel(BuildingState buildingState)
     {
@@ -180,10 +188,31 @@ public class BuildingInfoUIPanelScript : MonoBehaviour
         return mustOffUI;
     }
 
+    public void RefreshIfSelected(BuildingState completedBuilding)
+    {
+        if (_nowBuilding != completedBuilding)
+        {
+            return;
+        }
+
+        ShowUIPanel(completedBuilding);
+    }
+
+    public void ConstructionPrgressUIRefresh()
+    {
+
+        if(_nowBuilding == null)
+        {
+            return;
+        }
+
+        ProgressValueText.text = (_nowBuilding.ConstructionProgress * 100f).ToString("F1");
+    }
+
     private void ShowUnderConstructionUI()
     {
 
-        Debug.Log("ShowUnderConstructionUI called");
+        //Debug.Log("ShowUnderConstructionUI called");
 
         UnderConstructionUI.SetActive(true);
         CompleteBuildingUI.SetActive(false);
@@ -203,7 +232,7 @@ public class BuildingInfoUIPanelScript : MonoBehaviour
         AssignedMaterialsValueText.text = _nowBuilding.AssignedMaterials.ToString();
         RequiredMaterialsValueText.text = _nowBuilding.RequiredMaterials.ToString();
         // progress
-        ProgressValueText.text = (_nowBuilding.ConstructionProgress * 100f).ToString();
+        ConstructionPrgressUIRefresh();
     }
 
     public void OffUIPanel()
@@ -211,5 +240,155 @@ public class BuildingInfoUIPanelScript : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // 버튼도 만들기
+    public bool FireGynaikoeidesBuilder()
+    {
+        _flag = _nowBuilding.FireGynaikoeidesBuilder();
+        if (_flag)
+        {
+            ShowUnderConstructionUI();
+        }
+        return _flag;
+    }
+    public bool FireAnthroposBuilder()
+    {
+        _flag = _nowBuilding.FireAnthroposBuilder();
+        if (_flag)
+        {
+            ShowUnderConstructionUI();
+        }
+        return _flag;
+    }
+
+    public bool AssignGynaikoeidesBuilder()
+    {
+        _flag = _nowBuilding.AssignGynaikoeidesBuilder();
+        if (_flag)
+        {
+            ShowUnderConstructionUI();
+        }
+        return _flag;
+    }
+
+    public bool AssignAnthroposBuilder()
+    {
+        _flag = _nowBuilding.AssignAnthroposBuilder();
+        if (_flag)
+        {
+            ShowUnderConstructionUI();
+        }
+        return _flag;
+    }
+
+    public int AssignMaterials(int materialsNum)
+    {
+        _num = _nowBuilding.AssignMaterials(materialsNum);
+        if(_num != materialsNum)
+        {
+            ShowUnderConstructionUI();
+        }
+        return _num;
+    }
+
+    public StoreType SelectFood()
+    {
+        StoreType storeType;
+
+        DepotState depot = _nowBuilding as DepotState;
+
+        storeType = depot.ChangeStoreType(StoreType.Food);
+
+        FoodChoicedButton.SetActive(true);
+        FoodSelectButton.SetActive(false);
+        GynaikoeideisChoicedButton.SetActive(false);
+        GynaikoeideisSelectButton.SetActive(true);
+        MaterialsChoicedButton.SetActive(false);
+        MaterialsSelectButton.SetActive(true);
+
+        return storeType;
+    }
+
+    public StoreType SelectGynaikoeideis()
+    {
+        StoreType storeType;
+
+        DepotState depot = _nowBuilding as DepotState;
+
+        storeType = depot.ChangeStoreType(StoreType.Gynaikoeideis);
+
+        FoodChoicedButton.SetActive(false);
+        FoodSelectButton.SetActive(true);
+        GynaikoeideisChoicedButton.SetActive(true);
+        GynaikoeideisSelectButton.SetActive(false);
+        MaterialsChoicedButton.SetActive(false);
+        MaterialsSelectButton.SetActive(true);
+
+        return storeType;
+    }
+
+    public StoreType SelectMaterials()
+    {
+        StoreType storeType;
+
+        DepotState depot = _nowBuilding as DepotState;
+
+        storeType = depot.ChangeStoreType(StoreType.Materials);
+
+        FoodChoicedButton.SetActive(false);
+        FoodSelectButton.SetActive(true);
+        GynaikoeideisChoicedButton.SetActive(false);
+        GynaikoeideisSelectButton.SetActive(true);
+        MaterialsChoicedButton.SetActive(true);
+        MaterialsSelectButton.SetActive(false);
+
+        return storeType;
+    }
+
+
+    public bool AssignAnthroposWorker()
+    {
+        IWorkable building = _nowBuilding as IWorkable;
+
+        _flag = building.AssignAnthroposWorker();
+        if (_flag)
+        {
+            ShowUIPanel(_nowBuilding);
+        }
+        return _flag;
+    }
+
+    public bool FireAnthroposWorker()
+    {
+        IWorkable building = _nowBuilding as IWorkable;
+
+        _flag = building.FireAnthroposWorker();
+        if (_flag)
+        {
+            ShowUIPanel(_nowBuilding);
+        }
+        return _flag;
+    }
+
+    public bool AssignGynaikoeidesWorker()
+    {
+        IWorkable building = _nowBuilding as IWorkable;
+
+        _flag = building.AssignGynaikoeidesWorker();
+        if (_flag)
+        {
+            ShowUIPanel(_nowBuilding);
+        }
+        return _flag;
+    }
+
+    public bool FireGynaikoeidesWorker()
+    {
+        IWorkable building = _nowBuilding as IWorkable;
+
+        _flag = building.FireGynaikoeidesWorker();
+        if (_flag)
+        {
+            ShowUIPanel(_nowBuilding);
+        }
+        return _flag;
+    }
 }

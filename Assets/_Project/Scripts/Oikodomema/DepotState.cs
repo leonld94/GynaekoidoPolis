@@ -19,16 +19,18 @@ public class DepotState : BuildingState
     /// <summary>
     /// 저장요소를 변경하는 Method
     /// </summary>
-    /// <param name="newStoreType"></param>
-    /// <returns>저장요소 변경되면 True, 변경되지 않으면 False.</returns>
-    public bool ChangeStoreType(StoreType newStoreType)
+    /// <param name="newStoreType">변경할 StorageType</param>
+    /// <returns>이전에 저장되어있던 StorageType을 반환</returns>
+    public StoreType ChangeStoreType(StoreType newStoreType)
     {
         if (StoreType != newStoreType)
         {
+            StoreType prev;
+            prev = StoreType;
             StoreType = newStoreType;
-            return true;
+            return prev;
         }
-        return false;
+        return StoreType;
     }
 }
 

@@ -125,7 +125,14 @@ public class CameraController : MonoBehaviour
         else
         {
             _cameraPosition.y += _cameraZoomDelta;
-            _moveSpeed += _moveSpeedStep;
+            if (_cameraZoomDelta < 0)
+            {
+                _moveSpeed -= _moveSpeedStep;
+            }
+            else
+            {
+                _moveSpeed += _moveSpeedStep;
+            }
         }
 
         //_cameraPosition.y -= Mathf.Sign(_scrollInput) * _heightStep;

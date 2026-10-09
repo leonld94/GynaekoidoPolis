@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using static SimulationController;
 
@@ -13,12 +14,17 @@ public class ScreenUIManager : MonoBehaviour
     [SerializeField] private LeftDownUIPanelScript LeftDownUIPanel;
     [SerializeField] private RightDownUIPanelScript RightDownUIPanel;
     [SerializeField] private EndingPanel EndingPanel;
+    [SerializeField] private BuildingInfoUIPanelScript BuildingInfoUIPanel;
 
     ////TopUIBar			                    Hour(식량, 자재, 인형)    Button(인형)
     ////LeftDownUIPanel	    Day(추위강도)		Hour(사망/분해)           Button(인형)
     ////RightDownUIPanel	Day(D-Day)			Hour(시간)
     ////EndingPanel								                                        별도호출
     ////LorePanel														                별도호출
+
+    // 임시 사용용 변수: GC 생기지 마라고 깡으로 할당
+    private bool _flag;
+    private int _num;
 
     public void Initialize(SimulationClock clock, GameState gameState)
     {
@@ -42,14 +48,13 @@ public class ScreenUIManager : MonoBehaviour
     // 필요정보: 자원값; GameState, 인구값; GameState
     public void HourUIRefresh()
     {
-
         TopUIBar.HourUIRefresh();
         LeftDownUIPanel.PopUIRefresh();
         RightDownUIPanel.TimeUIRefresh(Clock.Day, Clock.Hour);
-
+        BuildingInfoUIPanel.ConstructionPrgressUIRefresh();
     }
 
-    public void PlusButtonClicked()
+    public void ActiveGynaikoeideisPlusButtonClicked()
     {
         // 저장된 인형이 있다면
         if (0 < GameState.InactiveGynaikoeideisCount)
@@ -61,12 +66,12 @@ public class ScreenUIManager : MonoBehaviour
             GameState.InactiveGynaikoeideisCount--;
             GameState.ActiveGynaikoeideisCount++;
 
-            LeftDownUIPanel.GynaikoeideisUIRefresh();
+            LeftDownUIPanel.PopUIRefresh();
             TopUIBar.GynaikoeideisUIRefresh();
         }
     }
 
-    public void MinusButtonClicked()
+    public void ActiveGynaikoeideisMinusButtonClicked()
     {
         // 수용량에 여유가 있다면
         if (GameState.InactiveGynaikoeideisCount < GameState.InactiveGynaikoeideisStorageCapacity)
@@ -81,19 +86,26 @@ public class ScreenUIManager : MonoBehaviour
                 GameState.InactiveGynaikoeideisCount++;
                 GameState.ActiveGynaikoeideisCount--;
 
-                LeftDownUIPanel.GynaikoeideisUIRefresh();
+                LeftDownUIPanel.PopUIRefresh();
                 TopUIBar.GynaikoeideisUIRefresh();
             }
         }
+    }
+
+    public void OnBuildingConstructionCompleted(BuildingState building)
+    {
+        BuildingInfoUIPanel.RefreshIfSelected(building);
+        LeftDownUIPanel.PopUIRefresh();
     }
 
     // 주기: 버튼이 눌릴 때 => 즉 호출 경우가 버튼 눌릴 때인거잖아?
     // 1. 노동자 변화
     // 2. 자재 예측 요구량/생산량
     // 필요정보: 노동자값; GameState, 자원값; GameState
-    public void GeneralUIRefresh()
+    public void ResourceUIRefresh()
     {
-
+        LeftDownUIPanel.PopUIRefresh();
+        TopUIBar.HourUIRefresh();
     }
 
     public void ShowVictoryUI()
@@ -121,5 +133,205 @@ public class ScreenUIManager : MonoBehaviour
         //Debug.Log("ScreenUIManager.TimeSwitchCahged() Called");
 
         RightDownUIPanel.TimeSwitchChanged(isPaused, gameSpeed);
+    }
+
+    /// <summary>
+    /// 빌더를 건물에서 풀어줌
+    /// </summary>
+    public void BuilderGnkMinusButtonClicked()
+    {
+        // 해고를 시도해보고
+        _flag = BuildingInfoUIPanel.FireGynaikoeidesBuilder();
+
+        // 성공한다면
+        if (_flag)
+        {
+            // 갱신
+            GameState.WorkingGynaikoeideisCount--;
+            ResourceUIRefresh();
+        }
+    }
+
+    /// <summary>
+    /// 빌더를 건물에서 풀어줌
+    /// </summary>
+    public void BuilderAnthrpMinusButtonClicked()
+    {
+        // 해고를 시도해보고
+        _flag = BuildingInfoUIPanel.FireAnthroposBuilder();
+
+        // 성공한다면
+        if (_flag)
+        {
+            // 갱신
+            GameState.WorkingAnthropoiCount--;
+            ResourceUIRefresh();
+        }
+    }
+
+    /// <summary>
+    ///  빌더를 건물에 할당함
+    /// </summary>
+    public void BuilderGnkPlusButtonClicked()
+    {
+        // 충분한 수의 백수가 있다면
+        if (GameState.WorkingGynaikoeideisCount < GameState.ActiveGynaikoeideisCount)
+        {
+            // 시도를 해보고
+            _flag = BuildingInfoUIPanel.AssignGynaikoeidesBuilder();
+            // 성공하면
+            if (_flag)
+            {
+                GameState.WorkingGynaikoeideisCount++;
+                ResourceUIRefresh();
+            }
+        }
+    }
+
+    public void BuilderAnthrpPlusButtonClicked()
+    {
+        // 충분한 수의 백수가 있다면
+        if (GameState.WorkingAnthropoiCount < GameState.LivingAnthropoiCount)
+        {
+            // 시도를 해보고
+            _flag = BuildingInfoUIPanel.AssignAnthroposBuilder();
+            // 성공하면
+            if (_flag)
+            {
+                GameState.WorkingAnthropoiCount++;
+                ResourceUIRefresh();
+            }
+        }
+    }
+
+    public void BuildAssignMaterialsButtonClicked()
+    {
+        // 여유가 있다면
+        if(100 <= GameState.StoredMaterials)
+        {
+            _num = 100;
+            GameState.StoredMaterials -= _num;
+            // 일정수만큼 넣어보고
+            _num = BuildingInfoUIPanel.AssignMaterials(_num);
+            // 반환값 다시 넣기
+            GameState.StoredMaterials += _num;
+            ResourceUIRefresh();
+        }
+    }
+
+    public void SelectFoodButtonClicked()
+    {
+        StoreType storeType = BuildingInfoUIPanel.SelectFood();
+
+        switch (storeType)
+        {
+            case StoreType.Gynaikoeideis:
+                GameState.EditStorageValue(1, -1, 0);
+                break;
+            case StoreType.Materials:
+                GameState.EditStorageValue(1, 0, -1);
+                break;
+            default:
+                break;
+        }
+
+        TopUIBar.HourUIRefresh();
+    }
+
+    public void SelectGynaikoeideisButtonClicked()
+    {
+        StoreType storeType = BuildingInfoUIPanel.SelectGynaikoeideis();
+
+        switch (storeType)
+        {
+            case StoreType.Food:
+                GameState.EditStorageValue(-1, 1, 0);
+                break;
+            case StoreType.Materials:
+                GameState.EditStorageValue(0, 1, -1);
+                break;
+            default:
+                break;
+        }
+
+        TopUIBar.HourUIRefresh();
+    }
+
+    public void SelectMaterialsButtonClicked()
+    {
+        StoreType storeType = BuildingInfoUIPanel.SelectMaterials();
+
+        switch (storeType)
+        {
+            case StoreType.Food:
+                GameState.EditStorageValue(-1, 0, 1);
+                break;
+            case StoreType.Gynaikoeideis:
+                GameState.EditStorageValue(0, -1, 1);
+                break;
+            default:
+                break;
+        }
+
+        TopUIBar.HourUIRefresh();
+    }
+
+    public void WorkerGnkMinusButtonClicked()
+    {
+        // 해고를 시도해보고
+        _flag = BuildingInfoUIPanel.FireGynaikoeidesWorker();
+
+        // 성공한다면
+        if (_flag)
+        {
+            // 갱신
+            GameState.WorkingGynaikoeideisCount--;
+            ResourceUIRefresh();
+        }
+    }
+
+    public void WorkerAnthrpMinusButtonClicked()
+    {
+        // 해고를 시도해보고
+        _flag = BuildingInfoUIPanel.FireAnthroposWorker();
+
+        // 성공한다면
+        if (_flag)
+        {
+            // 갱신
+            GameState.WorkingAnthropoiCount--;
+            ResourceUIRefresh();
+        }
+    }
+
+    public void WorkerGnkPlusButtonClicked()
+    {
+        // 충분한 수의 백수가 있다면
+        if (GameState.WorkingGynaikoeideisCount < GameState.ActiveGynaikoeideisCount)
+        {
+            // 시도를 해보고
+            _flag = BuildingInfoUIPanel.AssignGynaikoeidesWorker();
+            // 성공하면
+            if (_flag)
+            {
+                GameState.WorkingGynaikoeideisCount++;
+                ResourceUIRefresh();
+            }
+        }
+    }
+    public void WorkerAnthrpPlusButtonClicked()
+    {
+        // 충분한 수의 백수가 있다면
+        if (GameState.WorkingAnthropoiCount < GameState.LivingAnthropoiCount)
+        {
+            // 시도를 해보고
+            _flag = BuildingInfoUIPanel.AssignAnthroposWorker();
+            // 성공하면
+            if (_flag)
+            {
+                GameState.WorkingAnthropoiCount++;
+                ResourceUIRefresh();
+            }
+        }
     }
 }

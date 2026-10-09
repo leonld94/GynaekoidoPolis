@@ -862,7 +862,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD558\uB8E8\uB2F9 \uC790\uC7AC \uC694\uAD6C\uB7C9 "
+  m_text: "\uC2DC\uAC04\uB2F9 \uC790\uC7AC \uC694\uAD6C\uB7C9 "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
   m_sharedMaterial: {fileID: -3496464442297117671, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
@@ -4065,7 +4065,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: PlusButtonClicked
+        m_MethodName: ActiveGynaikoeideisPlusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5113,7 +5113,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: MinusButtonClicked
+        m_MethodName: BuilderAnthrpMinusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6035,7 +6035,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 423563277}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1891263347}
+        m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
+        m_MethodName: SelectGynaikoeideisButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &423563277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10487,7 +10499,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: MinusButtonClicked
+        m_MethodName: WorkerGnkMinusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11028,7 +11040,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC778\uAC04 \uB178\uB3D9\uB825       / "
+  m_text: "\uC778\uAC04 \uB178\uB3D9\uB825           / "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
   m_sharedMaterial: {fileID: -3496464442297117671, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
@@ -11289,7 +11301,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBC30\uCE58\uB41C \uC778\uD615          /"
+  m_text: "\uBC30\uCE58\uB41C \uC778\uAC04          /"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
   m_sharedMaterial: {fileID: -3496464442297117671, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
@@ -12018,7 +12030,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: PlusButtonClicked
+        m_MethodName: BuilderAnthrpPlusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12537,7 +12549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &855940872
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12620,7 +12632,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD558\uB8E8\uB2F9 \uC790\uC7AC \uC694\uAD6C\uB7C9 "
+  m_text: "\uC2DC\uAC04\uB2F9 \uC790\uC7AC \uC694\uAD6C\uB7C9 "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
   m_sharedMaterial: {fileID: -3496464442297117671, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
@@ -13086,6 +13098,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4161625484153630596, guid: 70971a4a05063a1449a007910caa6be3, type: 3}
+      propertyPath: _maxHeight
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161625484153630596, guid: 70971a4a05063a1449a007910caa6be3, type: 3}
+      propertyPath: _minHeight
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161625484153630596, guid: 70971a4a05063a1449a007910caa6be3, type: 3}
+      propertyPath: _moveSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161625484153630596, guid: 70971a4a05063a1449a007910caa6be3, type: 3}
+      propertyPath: _maxMoveSpeed
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161625484153630596, guid: 70971a4a05063a1449a007910caa6be3, type: 3}
+      propertyPath: _minMoveSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161625484153630596, guid: 70971a4a05063a1449a007910caa6be3, type: 3}
+      propertyPath: _moveSpeedStep
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5553128186863899790, guid: 70971a4a05063a1449a007910caa6be3, type: 3}
       propertyPath: m_RenderPostProcessing
       value: 1
@@ -13187,7 +13223,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: PlusButtonClicked
+        m_MethodName: WorkerGnkPlusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15001,7 +15037,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: PlusButtonClicked
+        m_MethodName: BuildAssignMaterialsButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15853,7 +15889,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086395462}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.0047943853}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15864,7 +15900,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -250.0055, y: -0.005393982}
+  m_AnchoredPosition: {x: -250, y: 0}
   m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1086395464
@@ -16993,7 +17029,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1170610164}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1891263347}
+        m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
+        m_MethodName: SelectMaterialsButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1170610164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17729,7 +17777,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: MinusButtonClicked
+        m_MethodName: BuilderGnkMinusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20881,6 +20929,13 @@ MonoBehaviour:
   - {fileID: 1917806449}
   - {fileID: 1453364895}
   - {fileID: 114351066}
+  - {fileID: 1453518099}
+  - {fileID: 1489997960}
+  - {fileID: 189496692}
+  - {fileID: 1074923013}
+  - {fileID: 1342954765}
+  - {fileID: 118135736}
+  - {fileID: 404381956}
   - {fileID: 1846526147}
   - {fileID: 1347481806}
 --- !u!4 &1358556883
@@ -21942,7 +21997,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: PlusButtonClicked
+        m_MethodName: WorkerAnthrpPlusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22516,7 +22571,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC778\uD615 \uB178\uB3D9\uB825       / "
+  m_text: "\uC778\uD615 \uB178\uB3D9\uB825           / "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
   m_sharedMaterial: {fileID: -3496464442297117671, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
@@ -22909,7 +22964,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: MinusButtonClicked
+        m_MethodName: ActiveGynaikoeideisMinusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23544,7 +23599,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: MinusButtonClicked
+        m_MethodName: WorkerAnthrpMinusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23871,7 +23926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1571080139
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24138,7 +24193,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1591449841
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26498,7 +26553,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1891263347}
         m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
-        m_MethodName: PlusButtonClicked
+        m_MethodName: BuilderGnkPlusButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27154,7 +27209,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: '0
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
   m_sharedMaterial: {fileID: -3496464442297117671, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
@@ -27754,7 +27811,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1805142153}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1891263347}
+        m_TargetAssemblyTypeName: ScreenUIManager, Assembly-CSharp
+        m_MethodName: SelectFoodButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1805142153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27940,7 +28009,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD558\uB8E8\uB2F9 \uC2DD\uB7C9 \uC694\uAD6C\uB7C9 "
+  m_text: "\uC2DC\uAC04\uB2F9 \uC2DD\uB7C9 \uC694\uAD6C\uB7C9 "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
   m_sharedMaterial: {fileID: -3496464442297117671, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
@@ -29044,6 +29113,7 @@ MonoBehaviour:
   LeftDownUIPanel: {fileID: 1638074293}
   RightDownUIPanel: {fileID: 2068632079}
   EndingPanel: {fileID: 2080473270}
+  BuildingInfoUIPanel: {fileID: 1086395466}
 --- !u!1 &1891434890
 GameObject:
   m_ObjectHideFlags: 0
@@ -29948,7 +30018,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1938982013}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000018582889}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29956,7 +30026,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 9.999786, y: 199.99988}
+  m_AnchoredPosition: {x: 25, y: 200}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1938982015
@@ -30641,7 +30711,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: '0
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
   m_sharedMaterial: {fileID: -3496464442297117671, guid: cc8c25472271d5244b5d121b928fd8d1, type: 2}
@@ -33624,7 +33696,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2132085805}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.00046457222}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33632,7 +33704,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 9.999786, y: 149.99988}
+  m_AnchoredPosition: {x: 25, y: 150}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2132085807

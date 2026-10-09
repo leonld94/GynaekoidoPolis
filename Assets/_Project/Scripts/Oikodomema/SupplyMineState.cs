@@ -24,7 +24,7 @@ public class SupplyMineState : BuildingState, IWorkable
         return AnthroposWorkerCount + GynaikoeidesWorkerCount;
     }
 
-    public bool AddAnthroposWorker()
+    public bool AssignAnthroposWorker()
     {
         if (AnthroposWorkerCount + GynaikoeidesWorkerCount < WorkerLimit)
         {
@@ -34,7 +34,7 @@ public class SupplyMineState : BuildingState, IWorkable
         return false;
     }
 
-    public bool SubAnthroposWorker()
+    public bool FireAnthroposWorker()
     {
         if (AnthroposWorkerCount > 0)
         {
@@ -44,7 +44,7 @@ public class SupplyMineState : BuildingState, IWorkable
         return false;
     }
 
-    public bool AddGynaikoeidesWorker()
+    public bool AssignGynaikoeidesWorker()
     {
         if (AnthroposWorkerCount + GynaikoeidesWorkerCount < WorkerLimit)
         {
@@ -54,7 +54,7 @@ public class SupplyMineState : BuildingState, IWorkable
         return false;
     }
 
-    public bool SubGynaikoeidesWorker()
+    public bool FireGynaikoeidesWorker()
     {
         if (GynaikoeidesWorkerCount > 0)
         {

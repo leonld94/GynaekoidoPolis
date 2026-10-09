@@ -61,6 +61,9 @@ public class SimulationController : MonoBehaviour
             Simulation.FailureOccurred += ScreenUIManager.ShowFailureUI;
             Simulation.VictoryAchieved += ScreenUIManager.ShowVictoryUI;
 
+            Simulation.BuildingConstructionCompleted += ScreenUIManager.OnBuildingConstructionCompleted;
+
+
         }
         else
         {
@@ -77,6 +80,7 @@ public class SimulationController : MonoBehaviour
 
         Simulation.VictoryAchieved -= ScreenUIManager.ShowVictoryUI;
         Simulation.FailureOccurred -= ScreenUIManager.ShowFailureUI;
+        Simulation.BuildingConstructionCompleted -= ScreenUIManager.OnBuildingConstructionCompleted;
     }
 
     private void OnEnable()

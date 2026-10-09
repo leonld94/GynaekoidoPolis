@@ -28,14 +28,14 @@ public class GameState
     }
 
     /// 식량
-    public int FoodStorageCapacity = 1000;                     // 최대 저장량
+    public int FoodStorageCapacity = 0;                     // 최대 저장량
     public int FoodStorageGrowth = 1000;                    // 창고 하나당 1000
     public int StoredFood = 1000;                           // 저장량
     public int FoodConsumedPerHour = 0;                     // 시간당 소비량
     public int FoodConsumedPerHourWithMultiplier = 0;       // 시간당 소비량(위기값 적용)
 
     // 자재
-    public int MaterialsStorageCapacity = 2000;             // 최대 저장량
+    public int MaterialsStorageCapacity = 0;             // 최대 저장량
     public int MaterialsStorageGrowth = 1000;               // 창고 하나당 1000
     public int StoredMaterials = 2000;                      // 저장량
     public int MaterialsConsumedPerHour = 0;                // 시간당 소비량
@@ -43,7 +43,7 @@ public class GameState
     public int RequiredWorkingMaterials = 0;
 
     // 인형
-    public int InactiveGynaikoeideisStorageCapacity = 10;    // 최대 비활성 가능 개수
+    public int InactiveGynaikoeideisStorageCapacity = 0;    // 최대 비활성 가능 개수
     public int InactiveGynaikoeideisStorageGrowth = 10;     // 창고 하나당 10
     public int InactiveGynaikoeideisCount = 0;              // 비활성화 개수
     public int ActiveGynaikoeideisCount = 100;              // 활성화 개수
@@ -120,5 +120,13 @@ public class GameState
         }
 
         return isWorkerDismantled;
+    }
+
+
+    public void EditStorageValue(int dFoodStorage, int dGynaikoeideisStorage, int dMaterialsStorage)
+    {
+        FoodStorageCapacity += FoodStorageGrowth * dFoodStorage;
+        InactiveGynaikoeideisStorageCapacity += InactiveGynaikoeideisStorageGrowth * dGynaikoeideisStorage;
+        MaterialsStorageCapacity += MaterialsStorageGrowth * dMaterialsStorage;
     }
 }

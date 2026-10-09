@@ -43,12 +43,16 @@ public class BuildingSelectionControllerScript : MonoBehaviour
         //대상을 지정한다: 이상해보이겠지만 Update 구조상 previous Hovered를 가져와야함
         _nowSelectedObject = _prevHoveredObject;
 
-        //if (_nowSelectedObject is BuildingSiteView)
+        // UI 버튼을 누른 클릭이 월드까지 전달되는 것을 방지
+        if (EventSystem.current != null &&
+            EventSystem.current.IsPointerOverGameObject())
         {
-            Debug.Log("Object is" + _nowSelectedObject);
-            Debug.Log("BuildingState is " + _nowSelectedObject?.SelectableBuildingState);
-            mustOffUI = BuildingInfoUIPanel.ShowUIPanel(_nowSelectedObject?.SelectableBuildingState);
+            return;
         }
+
+        //Debug.Log("Object is" + _nowSelectedObject);
+        //Debug.Log("BuildingState is " + _nowSelectedObject?.SelectableBuildingState);
+        mustOffUI = BuildingInfoUIPanel.ShowUIPanel(_nowSelectedObject?.SelectableBuildingState);
 
         if (mustOffUI)
         {

@@ -66,8 +66,13 @@ public class BuildingState
     public int AssignMaterials(int materialsNum)
     {
         AssignedMaterials += materialsNum;
-        int returnValue = AssignedMaterials - RequiredMaterials;
-        AssignedMaterials -= returnValue;
+
+        int returnValue = 0;
+        if (RequiredMaterials < AssignedMaterials)
+        {
+            returnValue = AssignedMaterials - RequiredMaterials;
+            AssignedMaterials -= returnValue;
+        }
         return returnValue;
     }
 
@@ -82,7 +87,7 @@ public class BuildingState
         return false;
     }
 
-    public bool fireAnthroposBuilder()
+    public bool FireAnthroposBuilder()
     {
         if(0 < AnthropoiBuilderCount)
         {
@@ -104,7 +109,7 @@ public class BuildingState
         return false;
     }
 
-    public bool fireGynaikoeidesBuilder()
+    public bool FireGynaikoeidesBuilder()
     {
         if (0 < GynaikoeideisBuilderCount)
         {
@@ -115,7 +120,7 @@ public class BuildingState
         return false;
     }
 
-    public bool isConstructionComplete()
+    public bool TryConstructionComplete()
     {
         if(ConstructionProgress >= 1.0f)
         {
