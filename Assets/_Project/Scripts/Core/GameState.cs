@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
-using UnityEngine;
-
+/// <summary>
+/// 시뮬레이션 전체가 가지는 상태값을 다루는 Class
+/// </summary>
 public class GameState
 {
     // 기본정보

@@ -23,29 +23,42 @@ public class BuildingSiteView : MonoBehaviour, ISelectableBuilding
     {
         if(buildingTypeId == BuildingType.Depot)
         {
-            BuildingState = new DepotState(siteId, IsConstructed, buildingModel, siteModel, _initialStoreType);
+            BuildingState = new DepotState(siteId, IsConstructed, _initialStoreType);
+            RefreshModel();
             return BuildingState;
         }
         else if(buildingTypeId == BuildingType.FoodVault)
         {
-            BuildingState = new FoodVaultState(siteId, IsConstructed, buildingModel, siteModel);
+            BuildingState = new FoodVaultState(siteId, IsConstructed);
+            RefreshModel();
             return BuildingState;
         }
         else if (buildingTypeId == BuildingType.SupplyMine)
         {
-            BuildingState = new SupplyMineState(siteId, IsConstructed, buildingModel, siteModel);
+            BuildingState = new SupplyMineState(siteId, IsConstructed);
+            RefreshModel();
             return BuildingState;
         }
 
         // else로 정리할 수 있긴 한데 이 친구는 비정상작동이니까 따로 때놓는게 나을거같아서
-        BuildingState = new BuildingState(siteId, IsConstructed, buildingModel, siteModel);
+        BuildingState = new BuildingState(siteId, IsConstructed);
+        RefreshModel();
         return BuildingState;
     }
 
-    public void Refresh(BuildingState state)
+    public void RefreshModel()
     {
         // state.IsConstructed에 따라 건물 모델 표시
-        // 노동자 수, 선택 표시 등의 화면 갱신
+        if (BuildingState.IsConstructed)
+        {
+            buildingModel.SetActive(true);
+            siteModel.SetActive(false);
+        }
+        else
+        {
+            buildingModel.SetActive(false);
+            siteModel.SetActive(true);
+        }
     }
 
 

@@ -1,16 +1,13 @@
 using System;
-using Unity.VisualScripting;
-using UnityEngine;
 
 public class DepotState : BuildingState
 {
     private StoreType _storeType;
     public StoreType StoreType { get => _storeType; private set => _storeType = value; }
 
-    public DepotState(string siteId, bool isConstructed, 
-        GameObject buildingModel, GameObject siteModel,
+    public DepotState(string siteId, bool isConstructed,
         StoreType storeType = StoreType.Food) 
-        : base(siteId, isConstructed, buildingModel, siteModel)
+        : base(siteId, isConstructed)
     {
         RequiredMaterials = 1000;
         StoreType = storeType; // 기본이 Food 

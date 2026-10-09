@@ -50,7 +50,7 @@ public class ScreenUIManager : MonoBehaviour
     {
         TopUIBar.HourUIRefresh();
         LeftDownUIPanel.PopUIRefresh();
-        RightDownUIPanel.TimeUIRefresh(Clock.Day, Clock.Hour);
+        RightDownUIPanel.TimeUIRefresh(Clock.PureDay, Clock.Hour);
         BuildingInfoUIPanel.ConstructionPrgressUIRefresh();
     }
 

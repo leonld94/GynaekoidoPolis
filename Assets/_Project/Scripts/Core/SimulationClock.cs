@@ -1,7 +1,7 @@
 using System.Diagnostics;
 
 /// <summary>
-/// 시뮬레이션에서 흐르는 시간만을 표현하는 Class.
+/// 시뮬레이션에서 흐르는 시간을 담당하는 Class.
 /// </summary>
 public class SimulationClock
 {
@@ -17,6 +17,8 @@ public class SimulationClock
     public int Hour { get; private set; }
     public int Day { get; private set; }
     public int Year { get; private set; }
+
+    public int PureDay { get => Day + Year * DaysPerYear; }
 
     public SimulationClock()
     {

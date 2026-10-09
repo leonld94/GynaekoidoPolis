@@ -1,11 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
 using static MapData;
-
-
 
 public class Map
 {

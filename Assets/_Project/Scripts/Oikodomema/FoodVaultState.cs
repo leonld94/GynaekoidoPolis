@@ -11,9 +11,8 @@ public class FoodVaultState : BuildingState, IWorkable
 
     public const int ResourceProduction = 50;
 
-    public FoodVaultState(string siteId, bool isConstructed, 
-        GameObject buildingModel, GameObject siteModel) 
-        : base(siteId, isConstructed, buildingModel, siteModel)
+    public FoodVaultState(string siteId, bool isConstructed) 
+        : base(siteId, isConstructed)
     {
         AnthroposWorkerCount = 0;
         GynaikoeidesWorkerCount = 0;

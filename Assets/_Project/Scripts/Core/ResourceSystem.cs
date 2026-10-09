@@ -17,7 +17,6 @@ public class ResourceSystem
         InactiveBuildings = InactB;
     }
 
-
     public void CalculateResourceProduction()
     {
         //GameState.FoodStorageCapacity = 0;

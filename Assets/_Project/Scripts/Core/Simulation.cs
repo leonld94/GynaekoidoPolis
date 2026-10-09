@@ -1,7 +1,6 @@
-using UnityEngine;
+//using UnityEngine;
 using System.Collections.Generic;
 using System;
-using UnityEditor.Rendering.BuiltIn.ShaderGraph;
 
 /// <summary>
 /// 전체 시뮬레이션 자체를 표상하는 Class. 즉 Simulation 그 자체.
@@ -39,7 +38,7 @@ public class Simulation
 
         if (gameData == null)
         {
-            Debug.Log("Prototype 감지 from Simulation Constructor");
+            //Debug.Log("Prototype 감지 from Simulation Constructor");
             Clock = new SimulationClock();
             Clock.Reset();
             GameState = new GameState();
@@ -59,7 +58,7 @@ public class Simulation
     /// <param name="initialBuildings">SimulationController를 통해 받아온 건물 상태 목록</param>
     public Simulation(GameData gameData, List<BuildingState> initialBuildings)
     {
-        Debug.Log("Prototype 감지 from Simulation Constructor");
+        //Debug.Log("Prototype 감지 from Simulation Constructor");
         Clock = new SimulationClock();
         Clock.Reset();
         GameState = new GameState();
@@ -107,7 +106,7 @@ public class Simulation
 
     private void CheckVictoryCondition()
     {
-        if (Clock.Year * 15 + Clock.Day >= GameState.RescueArrivalDay)
+        if (Clock.PureDay >= GameState.RescueArrivalDay)
         {
             if(GameState.GameFlow == 0)
             {
@@ -150,31 +149,31 @@ public class Simulation
         switch (GameState.ConsumeMultiplier)
         {
             case 1:
-                if((int)GameState.HazardLevelDay.Level1 < Clock.Day)
+                if((int)GameState.HazardLevelDay.Level1 < Clock.PureDay)
                 {
                     GameState.ConsumeMultiplier = 2;
                 }
                 break;
             case 2:
-                if ((int)GameState.HazardLevelDay.Level2 < Clock.Day)
+                if ((int)GameState.HazardLevelDay.Level2 < Clock.PureDay)
                 {
                     GameState.ConsumeMultiplier = 3;
                 }
                 break;
             case 3:
-                if ((int)GameState.HazardLevelDay.Level3 < Clock.Day)
+                if ((int)GameState.HazardLevelDay.Level3 < Clock.PureDay)
                 {
                     GameState.ConsumeMultiplier = 4;
                 }
                 break;
             case 4:
-                if ((int)GameState.HazardLevelDay.Level4 < Clock.Day)
+                if ((int)GameState.HazardLevelDay.Level4 < Clock.PureDay)
                 {
                     GameState.ConsumeMultiplier = 5;
                 }
                 break;
             case 5:
-                if ((int)GameState.HazardLevelDay.Level5 < Clock.Day)
+                if ((int)GameState.HazardLevelDay.Level5 < Clock.PureDay)
                 {
                     GameState.ConsumeMultiplier = 1;
                 }

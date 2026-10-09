@@ -43,6 +43,7 @@ public class SimulationController : MonoBehaviour
 
     private void Awake()
     {
+
         // _buildingRegistry는 Prototype에만 있을 예정인데 나중에도 작동되게 만들어야할수도.
         Simulation = new Simulation(GameDataTransfer.GetGameData(), 
             _buildingRegistry.CreateInitialStates());
@@ -62,7 +63,7 @@ public class SimulationController : MonoBehaviour
             Simulation.VictoryAchieved += ScreenUIManager.ShowVictoryUI;
 
             Simulation.BuildingConstructionCompleted += ScreenUIManager.OnBuildingConstructionCompleted;
-
+            Simulation.BuildingConstructionCompleted += _buildingRegistry.RefreshBySiteId;
 
         }
         else
@@ -81,6 +82,7 @@ public class SimulationController : MonoBehaviour
         Simulation.VictoryAchieved -= ScreenUIManager.ShowVictoryUI;
         Simulation.FailureOccurred -= ScreenUIManager.ShowFailureUI;
         Simulation.BuildingConstructionCompleted -= ScreenUIManager.OnBuildingConstructionCompleted;
+        Simulation.BuildingConstructionCompleted -= _buildingRegistry.RefreshBySiteId;
     }
 
     private void OnEnable()
@@ -123,9 +125,17 @@ public class SimulationController : MonoBehaviour
         TogglePause();
     }
 
+    public void DoNotPause()
+    {
+        IsPaused = false;
+
+        Debug.Log($"Game Resumed at {(int)GameSpeed}x");
+
+        ScreenUIManager.TimeSwitchChanged(IsPaused, GameSpeed);
+    }
+
     private void TogglePause()
     {
-
         IsPaused = !IsPaused;
 
         Debug.Log(IsPaused

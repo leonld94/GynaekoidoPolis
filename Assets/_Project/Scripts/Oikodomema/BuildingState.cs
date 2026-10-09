@@ -1,9 +1,9 @@
-using Unity;
-using UnityEngine;
 
+/// <summary>
+/// 건물의 핵심 그 자체이자 건물의 상태를 담당하는 Class
+/// </summary>
 public class BuildingState
 {
-
 
     public string SiteId { get; }
     public bool IsConstructed { get; protected set; }
@@ -15,11 +15,8 @@ public class BuildingState
     public int GynaikoeideisBuilderCount { get; set; } // 현재 건설 노동자 수
     public int BuilderLimit { get; }
 
-    private GameObject _buildingModel;
-    private GameObject _siteModel;
 
-
-    public BuildingState(string siteId, bool isConstructed, GameObject buildingModel, GameObject siteModel)
+    public BuildingState(string siteId, bool isConstructed)
     {
         SiteId = siteId;
         IsConstructed = isConstructed;
@@ -30,19 +27,6 @@ public class BuildingState
         AnthropoiBuilderCount = 0;
         GynaikoeideisBuilderCount = 0;
         BuilderLimit = 15;
-        _buildingModel = buildingModel;
-        _siteModel = siteModel;
-
-        if(IsConstructed)
-        {
-            _buildingModel.SetActive(true);
-            _siteModel.SetActive(false);
-        }
-        else
-        {
-            _buildingModel.SetActive(false);
-            _siteModel.SetActive(true);
-        }
     }
 
     /// <summary>
@@ -125,8 +109,6 @@ public class BuildingState
         if(ConstructionProgress >= 1.0f)
         {
             IsConstructed = true;
-            _buildingModel.SetActive(true);
-            _siteModel.SetActive(false);
             return true;
         }
         return false;

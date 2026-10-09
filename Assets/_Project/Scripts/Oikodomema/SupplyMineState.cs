@@ -10,9 +10,8 @@ public class SupplyMineState : BuildingState, IWorkable
 
     public const int ResourceProduction = 50;
 
-    public SupplyMineState(string siteId, bool isConstructed, 
-        GameObject buildingModel, GameObject siteModel) 
-        : base(siteId, isConstructed, buildingModel, siteModel)
+    public SupplyMineState(string siteId, bool isConstructed) 
+        : base(siteId, isConstructed)
     {
         AnthroposWorkerCount = 0;
         GynaikoeidesWorkerCount = 0;
